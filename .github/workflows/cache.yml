@@ -14,13 +14,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 1: Create a real folder to cache
+      - name: Create cache folder
+        run: |
+          mkdir -p my-cache
+          echo "This is cached content" > my-cache/file.txt
+
+      # Step 2: Cache that folder
       - name: Cache dependencies
         id: cache-step
         uses: actions/cache@v4
         with:
-          path: ~/.cache
+          path: my-cache
           key: cache-f9c4561
 
+      # Step 3: Required assignment step
       - name: prime-cache-f9c4561
         run: |
           if [ "${{ steps.cache-step.outputs.cache-hit }}" == "true" ]; then
